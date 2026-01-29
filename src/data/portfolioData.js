@@ -1,4 +1,7 @@
 
+import internshipImg from '../assets/internship_project.png';
+import virtualizationImg from '../assets/virtualization_project.png';
+
 export const portfolioData = {
     profile: {
         name: "Adrien LAGARRIGUE",
@@ -63,7 +66,7 @@ export const portfolioData = {
             description: "Travail au sein du Pôle Développement & Infrastructure.\n\n• Développement Web : Maintenance et évolution d'un site web professionnel en PHP / Symfony (ajout de fonctionnalités).\n\n• Infrastructure & Support : Gestion des tickets clients, intervention sur équipements réseaux (réinitialisation et configuration de switchs/routeurs), gestion du stockage des clients et du parc informatique.",
             technologies: ["PHP", "Symfony", "Switchs/Routeurs", "Support Client", "Gestion Stockage"],
             competencies: ["C1", "C3", "C4", "C5", "C6"],
-            image: "https://images.unsplash.com/photo-1558494949-ef526b0042a0?q=80&w=2070&auto=format&fit=crop"
+            image: internshipImg
         },
         {
             id: "P2",
@@ -73,7 +76,7 @@ export const portfolioData = {
             description: "Création et gestion de machines virtuelles. Simulation de réseaux d'entreprise et tests de sécurité.",
             technologies: ["Virtualisation", "Linux", "Réseau"],
             competencies: ["C3", "C5"],
-            image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop"
+            image: virtualizationImg
         },
         {
             id: "P3",
