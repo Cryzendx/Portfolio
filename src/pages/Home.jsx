@@ -49,7 +49,6 @@ const Home = () => {
                         transition={{ delay: 0.2 }}
                         className="text-5xl md:text-7xl font-bold mb-6 tracking-tight"
                     >
-                        Bonjour, je suis <br />
                         <span className="text-gradient leading-tight">{portfolioData.profile.name}</span>
                     </motion.h1>
 
