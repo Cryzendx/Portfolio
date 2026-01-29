@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Download, ChevronDown } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
+import profileImg from '../assets/profile.png';
 
 // Import sections
 import Competencies from './Competencies';
@@ -35,10 +36,10 @@ const Home = () => {
                         transition={{ duration: 0.5 }}
                         className="mb-8 relative inline-block"
                     >
+
                         <div className="w-40 h-40 rounded-full bg-gradient-to-r from-primary to-purple-500 p-1 shadow-2xl shadow-primary/30">
                             <div className="w-full h-full rounded-full bg-surface overflow-hidden flex items-center justify-center">
-                                {/* Placeholder for real photo */}
-                                <span className="text-6xl">👨‍💻</span>
+                                <img src={profileImg} alt="Profile" className="w-full h-full object-cover" />
                             </div>
                         </div>
                     </motion.div>
