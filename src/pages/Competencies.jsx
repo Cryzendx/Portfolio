@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
+import { ArrowRight } from 'lucide-react';
+import GlowCard from '../components/GlowCard';
 
 const Competencies = () => {
     const [highlightedId, setHighlightedId] = useState(null);
@@ -9,20 +11,18 @@ const Competencies = () => {
         const handleHashChange = () => {
             const hash = window.location.hash;
             if (hash.startsWith('#C')) {
-                const id = hash.substring(1); // e.g. "C1"
+                const id = hash.substring(1);
                 setHighlightedId(id);
                 setTimeout(() => setHighlightedId(null), 3000);
             }
         };
-
         window.addEventListener('hashchange', handleHashChange);
         handleHashChange();
-
         return () => window.removeEventListener('hashchange', handleHashChange);
     }, []);
 
     const scrollToProject = (projId) => {
-        const element = document.getElementById("projets");
+        const element = document.getElementById('projets');
         if (element) {
             window.scrollTo({
                 top: element.offsetTop - 80,
@@ -30,72 +30,99 @@ const Competencies = () => {
             });
             window.location.hash = `#${projId}`;
         }
-    }
+    };
 
     return (
-        <div id="competences" className="py-20 min-h-screen flex flex-col justify-center">
-            <h2 className="text-3xl font-bold mb-12 text-gradient inline-block">Mes Compétences</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div id="competences" className="py-24">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="text-center mb-16"
+            >
+                <h2 className="text-display" style={{ color: 'var(--color-text-primary)' }}>
+                    Compétences
+                </h2>
+                <p className="mt-4 text-sm max-w-lg mx-auto" style={{ color: 'var(--color-text-secondary)' }}>
+                    Les compétences clés que j'ai développées au fil de ma formation et de mes expériences professionnelles.
+                </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {portfolioData.competencies.map((comp, index) => {
                     const isHighlighted = highlightedId === comp.id;
                     return (
                         <motion.div
                             id={comp.id}
                             key={comp.id}
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className={`bg-surface border rounded-xl p-6 transition-all duration-500 relative overflow-hidden ${isHighlighted
-                                    ? 'border-primary ring-2 ring-primary shadow-lg shadow-primary/20 z-10 bg-surfaceHighlight'
-                                    : 'border-border hover:border-primary/50'
-                                }`}
+                            transition={{ delay: index * 0.08, duration: 0.5 }}
                         >
-                            {isHighlighted && (
-                                <div className="absolute top-0 right-0 bg-primary text-white text-xs px-2 py-1 rounded-bl">
-                                    Sélectionné
-                                </div>
-                            )}
+                            <GlowCard
+                                className="h-full"
+                                style={isHighlighted ? {
+                                    borderColor: 'var(--color-accent)',
+                                    boxShadow: '0 0 0 1px var(--color-accent)',
+                                } : {}}
+                            >
+                                <div className="p-6">
+                                    <div className="flex items-start gap-4 mb-4">
+                                        <div
+                                            className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold flex-shrink-0"
+                                            style={{ backgroundColor: 'var(--color-text-primary)', color: 'var(--color-bg)' }}
+                                        >
+                                            {comp.id}
+                                        </div>
+                                        <div>
+                                            <h3 className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+                                                {comp.title}
+                                            </h3>
+                                            <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-tertiary)' }}>
+                                                {comp.description}
+                                            </p>
+                                        </div>
+                                    </div>
 
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-xl font-bold text-white shadow-lg">
-                                    {comp.id}
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold text-text">{comp.title}</h3>
-                                    <p className="text-sm text-textMuted italic">{comp.description}</p>
-                                </div>
-                            </div>
+                                    <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--color-text-secondary)' }}>
+                                        {comp.fullDescription}
+                                    </p>
 
-                            <p className="text-textMuted mb-6 text-sm leading-relaxed border-l-2 border-primary/30 pl-4">
-                                {comp.fullDescription}
-                            </p>
-
-                            <div className="bg-background/50 rounded-lg p-4">
-                                <p className="text-xs text-textMuted uppercase font-bold mb-3 flex items-center gap-2">
-                                    Preuves (Projets) :
-                                </p>
-                                <div className="grid grid-cols-1 gap-2">
-                                    {comp.projects.map(projId => {
-                                        const project = portfolioData.projects.find(p => p.id === projId);
-                                        return (
-                                            <button
-                                                key={projId}
-                                                onClick={() => scrollToProject(projId)}
-                                                className="w-full text-left p-2 rounded hover:bg-surfaceHighlight transition-colors border border-transparent hover:border-border flex justify-between items-center group"
-                                            >
-                                                <div className="flex flex-col">
-                                                    <span className="font-medium text-sm group-hover:text-primary transition-colors">{project?.title}</span>
-                                                    <span className="text-[10px] text-textMuted">{project?.type}</span>
-                                                </div>
-                                                <span className="text-xs text-textMuted opacity-0 group-hover:opacity-100 transition-opacity">Voir ➜</span>
-                                            </button>
-                                        )
-                                    })}
+                                    <div className="pt-4 border-t" style={{ borderColor: 'var(--color-border)' }}>
+                                        <p className="text-[10px] uppercase font-semibold tracking-wider mb-3" style={{ color: 'var(--color-text-tertiary)' }}>
+                                            Projets associés
+                                        </p>
+                                        <div className="flex flex-col gap-1.5">
+                                            {comp.projects.map(projId => {
+                                                const project = portfolioData.projects.find(p => p.id === projId);
+                                                return (
+                                                    <button
+                                                        key={projId}
+                                                        onClick={() => scrollToProject(projId)}
+                                                        className="w-full text-left px-3 py-2 rounded-lg text-sm flex justify-between items-center group transition-colors"
+                                                        style={{ color: 'var(--color-text-secondary)' }}
+                                                        onMouseEnter={(e) => {
+                                                            e.currentTarget.style.backgroundColor = 'var(--color-text-primary)';
+                                                            e.currentTarget.style.color = 'var(--color-bg)';
+                                                        }}
+                                                        onMouseLeave={(e) => {
+                                                            e.currentTarget.style.backgroundColor = 'transparent';
+                                                            e.currentTarget.style.color = 'var(--color-text-secondary)';
+                                                        }}
+                                                    >
+                                                        <span className="font-medium text-xs">{project?.title}</span>
+                                                        <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </GlowCard>
                         </motion.div>
-                    )
+                    );
                 })}
             </div>
         </div>

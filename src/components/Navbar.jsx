@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
+    const [scrollProgress, setScrollProgress] = useState(0);
+    const { isDark, toggleTheme } = useTheme();
 
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
 
-            // Simple active section detection
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            setScrollProgress(totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0);
+
             const sections = ['home', 'competences', 'projets', 'cv', 'contact'];
-            for (const section of sections) {
+            for (const section of [...sections].reverse()) {
                 const element = document.getElementById(section);
                 if (element) {
                     const rect = element.getBoundingClientRect();
-                    if (rect.top >= 0 && rect.top <= 300) {
+                    if (rect.top <= 150) {
                         setActiveSection(section);
                         break;
                     }
@@ -33,7 +38,7 @@ const Navbar = () => {
         const element = document.getElementById(id);
         if (element) {
             window.scrollTo({
-                top: element.offsetTop - 80, // Offset for sticky header
+                top: element.offsetTop - 80,
                 behavior: 'smooth'
             });
         }
@@ -48,38 +53,67 @@ const Navbar = () => {
     ];
 
     return (
-        <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-surface/90 backdrop-blur-md border-b border-border shadow-lg' : 'bg-transparent'}`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
-                    <div className="flex-shrink-0 cursor-pointer" onClick={() => scrollToSection('home')}>
-                        <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
-                            Portfolio
-                        </span>
+        <nav
+            className={`fixed w-full z-50 transition-all duration-300 ease-apple ${
+                scrolled ? 'glass border-b' : 'bg-transparent'
+            }`}
+            style={{ borderColor: scrolled ? 'var(--color-nav-border)' : 'transparent' }}
+        >
+            <div className="max-w-5xl mx-auto px-6">
+                <div className="flex items-center justify-between h-12">
+                    <button
+                        onClick={() => scrollToSection('home')}
+                        className="text-sm font-semibold tracking-tight"
+                        style={{ color: 'var(--color-text-primary)' }}
+                    >
+                        Adrien Lagarrigue
+                    </button>
+
+                    <div className="hidden md:flex items-center gap-1">
+                        {navLinks.map((link) => (
+                            <button
+                                key={link.name}
+                                onClick={() => scrollToSection(link.id)}
+                                className="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200"
+                                style={{
+                                    color: activeSection === link.id
+                                        ? 'var(--color-accent)'
+                                        : 'var(--color-text-secondary)',
+                                    backgroundColor: activeSection === link.id
+                                        ? isDark ? 'rgba(41, 151, 255, 0.1)' : 'rgba(0, 113, 227, 0.08)'
+                                        : 'transparent',
+                                }}
+                            >
+                                {link.name}
+                            </button>
+                        ))}
+
+                        <div className="w-px h-4 mx-2" style={{ backgroundColor: 'var(--color-border)' }} />
+
+                        <button
+                            onClick={toggleTheme}
+                            className="p-1.5 rounded-full transition-all duration-200 hover:scale-110"
+                            style={{ color: 'var(--color-text-secondary)' }}
+                            aria-label="Changer le thème"
+                        >
+                            {isDark ? <Sun size={14} /> : <Moon size={14} />}
+                        </button>
                     </div>
 
-                    <div className="hidden md:block">
-                        <div className="ml-10 flex items-baseline space-x-8">
-                            {navLinks.map((link) => (
-                                <button
-                                    key={link.name}
-                                    onClick={() => scrollToSection(link.id)}
-                                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${activeSection === link.id
-                                            ? 'text-primary bg-surfaceHighlight'
-                                            : 'text-textMuted hover:text-text hover:bg-surfaceHighlight/50'
-                                        }`}
-                                >
-                                    {link.name}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="md:hidden">
+                    <div className="flex items-center gap-2 md:hidden">
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 rounded-full"
+                            style={{ color: 'var(--color-text-secondary)' }}
+                        >
+                            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+                        </button>
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="inline-flex items-center justify-center p-2 rounded-md text-textMuted hover:text-text hover:bg-surfaceHighlight focus:outline-none"
+                            className="p-2 rounded-full"
+                            style={{ color: 'var(--color-text-secondary)' }}
                         >
-                            {isOpen ? <X size={24} /> : <Menu size={24} />}
+                            {isOpen ? <X size={18} /> : <Menu size={18} />}
                         </button>
                     </div>
                 </div>
@@ -91,17 +125,21 @@ const Navbar = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-surface border-b border-border"
+                        transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                        className="md:hidden glass border-t overflow-hidden"
+                        style={{ borderColor: 'var(--color-nav-border)' }}
                     >
-                        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                        <div className="px-6 py-3 space-y-1">
                             {navLinks.map((link) => (
                                 <button
                                     key={link.name}
                                     onClick={() => scrollToSection(link.id)}
-                                    className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${activeSection === link.id
-                                            ? 'text-primary bg-surfaceHighlight'
-                                            : 'text-textMuted hover:text-text hover:bg-surfaceHighlight/50'
-                                        }`}
+                                    className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                                    style={{
+                                        color: activeSection === link.id
+                                            ? 'var(--color-accent)'
+                                            : 'var(--color-text-secondary)',
+                                    }}
                                 >
                                     {link.name}
                                 </button>
@@ -110,6 +148,17 @@ const Navbar = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Scroll progress */}
+            <div
+                className="absolute bottom-0 left-0 h-[2px]"
+                style={{
+                    width: `${scrollProgress}%`,
+                    background: 'var(--color-text-primary)',
+                    opacity: scrollProgress > 0 ? 1 : 0,
+                    transition: 'width 0.15s linear, opacity 0.3s ease',
+                }}
+            />
         </nav>
     );
 };

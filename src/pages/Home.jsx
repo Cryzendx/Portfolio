@@ -1,14 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Download, ChevronDown } from 'lucide-react';
+import { ArrowDown, Download } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
-import profileImg from '../assets/profile.png';
+import profileImg from '../assets/adrien.jpeg';
 
-// Import sections
 import Competencies from './Competencies';
 import Projects from './Projects';
 import Contact from './Contact';
 import CV from './CV';
+
+const fadeUp = {
+    initial: { opacity: 0, y: 30 },
+    animate: { opacity: 1, y: 0 },
+};
 
 const Home = () => {
     const scrollToNext = () => {
@@ -22,118 +26,122 @@ const Home = () => {
     };
 
     return (
-        <div className="flex flex-col gap-20">
+        <div className="flex flex-col">
             {/* Hero Section */}
-            <section id="home" className="min-h-[90vh] flex flex-col items-center justify-center text-center relative pointer-events-none">
-                {/* Background decorators */}
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10"></div>
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl -z-10"></div>
-
-                <div className="pointer-events-auto">
-                    <motion.div
-                        initial={{ scale: 0.5, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="mb-8 relative inline-block"
-                    >
-
-                        <div className="w-40 h-40 rounded-full bg-gradient-to-r from-primary to-purple-500 p-1 shadow-2xl shadow-primary/30">
-                            <div className="w-full h-full rounded-full bg-surface overflow-hidden flex items-center justify-center">
-                                <img src={profileImg} alt="Profile" className="w-full h-full object-cover" />
-                            </div>
+            <section id="home" className="min-h-[92vh] flex flex-col items-center justify-center text-center relative">
+                <motion.div
+                    {...fadeUp}
+                    transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="mb-8"
+                >
+                    <div className="relative w-36 h-36 mx-auto">
+                        <div className="absolute -inset-3 rounded-full blur-xl opacity-30 animate-pulse-slow"
+                             style={{ background: 'var(--color-text-tertiary)' }} />
+                        <div className="relative w-36 h-36 rounded-full overflow-hidden ring-1 ring-black/5 dark:ring-white/10 shadow-xl">
+                            <img src={profileImg} alt="Adrien Lagarrigue" className="w-full h-full object-cover" />
                         </div>
-                    </motion.div>
+                    </div>
+                </motion.div>
 
-                    <motion.h1
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-5xl md:text-7xl font-bold mb-6 tracking-tight"
-                    >
-                        <span className="text-gradient leading-tight">{portfolioData.profile.name}</span>
-                    </motion.h1>
+                <motion.h1
+                    {...fadeUp}
+                    transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="text-hero max-w-3xl"
+                    style={{ color: 'var(--color-text-primary)' }}
+                >
+                    {portfolioData.profile.name}
+                </motion.h1>
 
-                    <motion.p
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="text-xl md:text-2xl text-textMuted max-w-2xl mx-auto mb-8 font-light"
-                    >
-                        {portfolioData.profile.role}
-                    </motion.p>
+                <motion.p
+                    {...fadeUp}
+                    transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="text-lg md:text-xl font-light max-w-xl mx-auto mt-4"
+                    style={{ color: 'var(--color-text-secondary)' }}
+                >
+                    {portfolioData.profile.role}
+                </motion.p>
 
-                    <motion.p
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                        className="text-base text-textMuted max-w-xl mx-auto mb-10 leading-relaxed"
-                    >
-                        {portfolioData.profile.bio}
-                    </motion.p>
+                <motion.p
+                    {...fadeUp}
+                    transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="text-sm max-w-lg mx-auto mt-6 leading-relaxed"
+                    style={{ color: 'var(--color-text-tertiary)' }}
+                >
+                    {portfolioData.profile.bio}
+                </motion.p>
 
-                    <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center"
+                <motion.div
+                    {...fadeUp}
+                    transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="flex flex-col sm:flex-row gap-3 mt-10"
+                >
+                    <button
+                        onClick={scrollToNext}
+                        className="group px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 hover:opacity-80 flex items-center justify-center gap-2"
+                        style={{
+                            backgroundColor: 'var(--color-text-primary)',
+                            color: 'var(--color-bg)',
+                        }}
                     >
-                        <button
-                            onClick={scrollToNext}
-                            className="group px-8 py-4 bg-primary hover:bg-primaryHover text-white rounded-full font-medium transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-primary/25"
-                        >
-                            Découvrir mon portfolio
-                            <ArrowDown size={18} className="group-hover:translate-y-1 transition-transform" />
-                        </button>
-                        <button
-                            onClick={() => document.getElementById('cv')?.scrollIntoView({ behavior: 'smooth' })}
-                            className="px-8 py-4 bg-surfaceHighlight hover:bg-border text-text rounded-full font-medium transition-all duration-300 flex items-center justify-center gap-2 border border-border"
-                        >
-                            <Download size={18} />
-                            Voir mon CV
-                        </button>
-                    </motion.div>
-                </div>
+                        Découvrir mon portfolio
+                        <ArrowDown size={15} className="group-hover:translate-y-0.5 transition-transform" />
+                    </button>
+                    <button
+                        onClick={() => document.getElementById('cv')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 border"
+                        style={{
+                            color: 'var(--color-text-primary)',
+                            borderColor: 'var(--color-border)',
+                            backgroundColor: 'var(--color-bg-secondary)',
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = 'var(--color-text-primary)';
+                            e.currentTarget.style.color = 'var(--color-bg)';
+                            e.currentTarget.style.borderColor = 'var(--color-text-primary)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
+                            e.currentTarget.style.color = 'var(--color-text-primary)';
+                            e.currentTarget.style.borderColor = 'var(--color-border)';
+                        }}
+                    >
+                        <Download size={15} />
+                        Voir mon CV
+                    </button>
+                </motion.div>
 
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 1, duration: 2, repeat: Infinity, repeatType: "reverse" }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 text-textMuted/50"
+                    transition={{ delay: 1.5, duration: 1 }}
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2"
                 >
-                    <ChevronDown size={32} />
+                    <motion.div
+                        animate={{ y: [0, 6, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                    >
+                        <ArrowDown size={20} style={{ color: 'var(--color-text-tertiary)' }} />
+                    </motion.div>
                 </motion.div>
             </section>
 
-            {/* Sections Divider */}
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
-
-            {/* Competencies Section */}
-            <section>
-                <Competencies />
-            </section>
-
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
-
-            {/* Projects Section */}
-            <section>
-                <Projects />
-            </section>
-
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
-
-            {/* CV Section */}
-            <section id="cv" className="py-20">
-                <CV />
-            </section>
-
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
-
-            {/* Contact Section */}
-            <section id="contact" className="py-20">
-                <Contact />
-            </section>
+            {/* Sections */}
+            <Divider />
+            <section><Competencies /></section>
+            <Divider />
+            <section><Projects /></section>
+            <Divider />
+            <section id="cv" className="py-24"><CV /></section>
+            <Divider />
+            <section id="contact" className="py-24"><Contact /></section>
         </div>
     );
 };
+
+const Divider = () => (
+    <div className="w-full max-w-md mx-auto py-4">
+        <div className="h-px" style={{ background: 'linear-gradient(to right, transparent, var(--color-border), transparent)' }} />
+    </div>
+);
 
 export default Home;

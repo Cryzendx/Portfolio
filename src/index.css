@@ -1,21 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Light mode (default) */
 :root {
+    color-scheme: light;
+    --color-bg: #fbfbfd;
+    --color-bg-secondary: #ffffff;
+    --color-bg-tertiary: #f5f5f7;
+    --color-text-primary: #1d1d1f;
+    --color-text-secondary: #6e6e73;
+    --color-text-tertiary: #86868b;
+    --color-border: #e8e8ed;
+    --color-border-hover: #d2d2d7;
+    --color-accent: #0071e3;
+    --color-accent-hover: #0077ed;
+    --color-card-bg: #ffffff;
+    --color-card-hover: #f5f5f7;
+    --color-nav-bg: rgba(251, 251, 253, 0.72);
+    --color-nav-border: rgba(0, 0, 0, 0.08);
+}
+
+/* Dark mode */
+.dark {
     color-scheme: dark;
+    --color-bg: #000000;
+    --color-bg-secondary: #111111;
+    --color-bg-tertiary: #1d1d1f;
+    --color-text-primary: #f5f5f7;
+    --color-text-secondary: #a1a1a6;
+    --color-text-tertiary: #6e6e73;
+    --color-border: #333336;
+    --color-border-hover: #424245;
+    --color-accent: #2997ff;
+    --color-accent-hover: #0071e3;
+    --color-card-bg: #1d1d1f;
+    --color-card-hover: #2a2a2d;
+    --color-nav-bg: rgba(0, 0, 0, 0.72);
+    --color-nav-border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-    background-color: theme('colors.background');
-    color: theme('colors.text');
-    font-family: 'Inter', sans-serif;
-    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::selection {
+    background-color: var(--color-accent);
+    color: white;
 }
 
 @layer utilities {
     .text-gradient {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500;
+        @apply bg-clip-text text-transparent;
+        background-image: linear-gradient(135deg, var(--color-accent), #6e5ce6);
+    }
+
+    .glass {
+        background: var(--color-nav-bg);
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+
+    .card {
+        background: var(--color-card-bg);
+        border: 1px solid var(--color-border);
+        border-radius: 1rem;
+        transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .card:hover {
+        border-color: var(--color-border-hover);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .dark .card:hover {
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
     }
 }
